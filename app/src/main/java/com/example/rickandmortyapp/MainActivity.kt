@@ -3,6 +3,7 @@ package com.example.rickandmortyapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.rickandmortyapp.navigation.AppNavGraph
+import com.example.rickandmortyapp.navigation.NavigationState
+import com.example.rickandmortyapp.navigation.Screen
+import com.example.rickandmortyapp.navigation.rememberNavigationState
 import com.example.rickandmortyapp.ui.theme.RickAndMortyAppTheme
 import com.example.rickandmortyapp.utils.search
 
@@ -60,14 +65,21 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RickAndMortyAppTheme {
-                ShowSearch()
+                val navigationState = rememberNavigationState()
+                AppNavGraph(
+                    navHostController = navigationState.navHostController,
+                    personsListContent = { ShowSearch(navigationState) },
+                    personInfoContent = { PersonInfo() },
+                    filterScreenContent = { FilterScreen() }
+                )
             }
         }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun ShowSearch() {
+    fun ShowSearch(navigationState: NavigationState) {
+
         val searchText = remember { mutableStateOf("") }
         val mainList = remember { mutableStateOf(usersList) }
         val isActive = remember { mutableStateOf(false) }
@@ -112,13 +124,22 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 }
-            ) { PersonList(search(searchText.value, usersList)) }
-            PersonList(mainList.value)
+            ) {
+                PersonList(
+                    list = search(searchText.value, usersList),
+                    navigationState = navigationState
+                )
+            }
+            PersonList(
+                list = mainList.value,
+                navigationState = navigationState
+            )
         }
     }
 
     @Composable
-    fun PersonList(list: List<Person>) {
+    fun PersonList(list: List<Person>, navigationState: NavigationState) {
+
         Box(
             modifier = Modifier.fillMaxSize()
         )
@@ -131,11 +152,17 @@ class MainActivity : ComponentActivity() {
             ) {
                 items(items = list, key = { it.id }
                 ) { person ->
-                    PersonCard(person)
+                    Box(
+                        modifier = Modifier
+                            .clickable {
+                                navigationState.navigateTo(Screen.PersonInfo.route)
+                            }
+                            .fillMaxWidth()
+                    ) { PersonCard(person) }
                 }
             }
             FloatingActionButton(
-                onClick = {},
+                onClick = { navigationState.navigateTo(Screen.FilterScreen.route) },
                 shape = CircleShape,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
@@ -148,7 +175,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
-
-
 
