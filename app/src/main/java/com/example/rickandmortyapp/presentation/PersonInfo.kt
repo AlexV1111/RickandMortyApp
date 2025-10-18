@@ -1,4 +1,4 @@
-package com.example.rickandmortyapp
+package com.example.rickandmortyapp.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -11,21 +11,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.rickandmortyapp.R
+import com.example.rickandmortyapp.domain.entity.Location
+import com.example.rickandmortyapp.domain.entity.Origin
+import com.example.rickandmortyapp.domain.entity.Person
+import kotlin.Int
 
 @Composable
 fun PersonInfo() {
 
     val person = Person(
-        0,
-        "Rick Sanchez",
-        "Alive",
-        "Human",
-        "",
-        "Male",
-        R.drawable.rick,
-        emptyList(),
-        "",
-        "",
+        id = 0,
+        name = "Rick Sanchez",
+        status = "Alive",
+        species = "Human",
+        type = "",
+        gender = "Male",
+        origin = Origin("", ""),
+        location = Location("", ""),
+        image = R.drawable.rick,
+        episode = emptyList(),
+        created = "",
     )
 
     Column(
