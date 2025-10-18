@@ -4,6 +4,6 @@ import com.example.rickandmortyapp.domain.entity.Person
 import kotlinx.coroutines.flow.Flow
 
 interface PersonRepository {
-    suspend fun getPersonList(): Flow<List<Person>>
+    suspend fun getPersonList(page: Int): Flow<List<Person>>
     suspend fun getPersonById(personId: Int): Person
 }
