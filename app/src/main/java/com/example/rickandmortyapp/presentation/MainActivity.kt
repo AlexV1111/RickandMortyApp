@@ -1,4 +1,4 @@
-package com.example.rickandmortyapp
+package com.example.rickandmortyapp.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -32,6 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.rickandmortyapp.R
+import com.example.rickandmortyapp.domain.entity.Person
 import com.example.rickandmortyapp.navigation.AppNavGraph
 import com.example.rickandmortyapp.navigation.NavigationState
 import com.example.rickandmortyapp.navigation.Screen
@@ -85,10 +87,10 @@ class MainActivity : ComponentActivity() {
         val isActive = remember { mutableStateOf(false) }
 
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.Companion.fillMaxSize()
         ) {
             SearchBar(
-                modifier = Modifier
+                modifier = Modifier.Companion
                     .fillMaxWidth()
                     .padding(8.dp),
                 query = searchText.value,
@@ -141,7 +143,7 @@ class MainActivity : ComponentActivity() {
     fun PersonList(list: List<Person>, navigationState: NavigationState) {
 
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.Companion.fillMaxSize()
         )
         {
             LazyVerticalGrid(
@@ -153,7 +155,7 @@ class MainActivity : ComponentActivity() {
                 items(items = list, key = { it.id }
                 ) { person ->
                     Box(
-                        modifier = Modifier
+                        modifier = Modifier.Companion
                             .clickable {
                                 navigationState.navigateTo(Screen.PersonInfo.route)
                             }
@@ -164,8 +166,8 @@ class MainActivity : ComponentActivity() {
             FloatingActionButton(
                 onClick = { navigationState.navigateTo(Screen.FilterScreen.route) },
                 shape = CircleShape,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
+                modifier = Modifier.Companion
+                    .align(Alignment.Companion.BottomEnd)
                     .padding(16.dp)
             ) {
                 Icon(
@@ -177,4 +179,3 @@ class MainActivity : ComponentActivity() {
     }
 
 }
-
